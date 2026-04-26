@@ -1,0 +1,5 @@
+trust_category,facility_count,percent_of_total,avg_trust_score
+High Risk / Insufficient Evidence,4008,40.08,17.78
+Moderate Trust / Verify Before Use,2564,25.64,68.55
+Low Trust / Needs Human Verification,2145,21.45,50.89
+High Trust / Evidence Supported,1283,12.83,87.76

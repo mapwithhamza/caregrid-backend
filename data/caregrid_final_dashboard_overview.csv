@@ -1,0 +1,2 @@
+total_facilities,states_covered,average_trust_score,high_trust_count,moderate_trust_count,low_trust_count,high_risk_count,ready_for_recommendation_count,usable_with_verification_count,do_not_recommend_count
+10000,34,46.88,1283,2564,2145,4008,1258,2589,6153

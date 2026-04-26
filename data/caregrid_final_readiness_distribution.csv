@@ -1,0 +1,4 @@
+recommendation_readiness,facility_count,percent_of_total,avg_trust_score
+Do not recommend without human review,6153,61.53,29.33
+Usable with verification,2589,25.89,68.66
+Ready for recommendation,1258,12.58,87.91

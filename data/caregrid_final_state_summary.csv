@@ -1,0 +1,35 @@
+state,total_facilities,high_trust_facilities,moderate_trust_facilities,low_trust_facilities,high_risk_facilities,ready_for_recommendation,avg_trust_score,high_risk_percent,ready_percent,state_risk_level
+Maharashtra,1578,212,428,321,617,209,47.75,39.1,13.24,Moderate Risk
+Uttar Pradesh,1086,114,275,251,446,110,45.61,41.07,10.13,High Risk
+Gujarat,853,111,234,173,335,107,47.07,39.27,12.54,Moderate Risk
+Tamil Nadu,655,112,168,117,258,110,48.26,39.39,16.79,Moderate Risk
+Kerala,620,87,166,127,240,86,48.72,38.71,13.87,Moderate Risk
+Rajasthan,504,64,116,113,211,63,45.95,41.87,12.5,High Risk
+West Bengal,504,43,152,107,202,43,45.72,40.08,8.53,High Risk
+Karnataka,465,57,114,116,178,56,47.49,38.28,12.04,Moderate Risk
+Delhi,458,70,122,102,164,66,49.58,35.81,14.41,Moderate Risk
+Bihar,440,49,92,106,193,49,43.15,43.86,11.14,High Risk
+Telangana,437,61,111,104,161,60,48.65,36.84,13.73,Moderate Risk
+Punjab,414,47,102,90,175,47,45.32,42.27,11.35,High Risk
+Haryana,396,57,106,67,166,57,46.89,41.92,14.39,High Risk
+Madhya Pradesh,377,40,90,74,173,40,43.23,45.89,10.61,High Risk
+Andhra Pradesh,280,29,57,69,125,29,44.04,44.64,10.36,High Risk
+Jharkhand,140,17,36,31,56,16,47.7,40.0,11.43,High Risk
+Uttarakhand,137,19,33,29,56,18,46.93,40.88,13.14,High Risk
+Assam,131,16,32,31,52,16,47.26,39.69,12.21,Moderate Risk
+Chhattisgarh,120,15,33,34,38,15,49.56,31.67,12.5,Moderate Risk
+Odisha,109,15,25,30,39,14,48.9,35.78,12.84,Moderate Risk
+Jammu and Kashmir,84,15,22,13,34,15,49.15,40.48,17.86,High Risk
+Himachal Pradesh,48,9,15,7,17,8,50.4,35.42,16.67,Moderate Risk
+Tripura,34,3,8,5,18,3,42.85,52.94,8.82,High Risk
+Goa,32,4,7,11,10,4,50.47,31.25,12.5,Moderate Risk
+Puducherry,31,3,7,6,15,3,42.26,48.39,9.68,High Risk
+Chandigarh,28,7,7,3,11,7,53.43,39.29,25.0,Moderate Risk
+Manipur,18,3,3,2,10,3,39.61,55.56,16.67,High Risk
+Mizoram,5,0,1,0,4,0,31.6,80.0,0.0,Very High Risk
+Sikkim,5,2,0,3,0,2,68.2,0.0,40.0,Lower Risk
+Meghalaya,4,1,1,0,2,1,46.0,50.0,25.0,High Risk
+Nagaland,3,0,0,1,2,0,30.33,66.67,0.0,Very High Risk
+Arunachal Pradesh,2,1,1,0,0,1,79.5,0.0,50.0,Lower Risk
+Ladakh,1,0,0,1,0,0,59.0,0.0,0.0,Lower Risk
+Dadra and Nagar Haveli and Daman and Diu,1,0,0,1,0,0,56.0,0.0,0.0,Lower Risk

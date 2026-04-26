@@ -1,0 +1,7 @@
+facility_type,facility_count,avg_trust_score,ready_for_recommendation,high_risk_facilities
+clinic,6011,49.42,913,2257
+hospital,2789,39.51,183,1392
+dentist,740,54.34,136,210
+doctor,276,45.52,20,97
+farmacy,166,47.75,4,46
+pharmacy,18,46.89,2,6

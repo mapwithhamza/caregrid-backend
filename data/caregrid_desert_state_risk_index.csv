@@ -1,0 +1,35 @@
+state,total_facilities,high_trust_facilities,moderate_trust_facilities,low_trust_facilities,high_risk_facilities,ready_facilities,usable_with_verification_facilities,do_not_recommend_facilities,contradiction_flag_count,high_acuity_claim_count,unsupported_high_acuity_count,avg_trust_score,high_risk_percent,low_or_high_risk_percent,ready_percent,do_not_recommend_percent,contradiction_percent,unsupported_high_acuity_percent,trust_desert_risk_index,risk_level,analysis_confidence
+Tripura,34,3,8,5,18,3,8,23,5,7,4,42.85,52.94,67.65,8.82,67.65,14.71,57.14,65.32,High Trust Desert,Medium
+Ladakh,1,0,0,1,0,0,0,1,0,0,0,59.0,0.0,100.0,0.0,100.0,0.0,0.0,51.15,Moderate Trust Desert,Low - small sample
+Delhi,458,70,122,102,164,66,126,266,72,150,79,49.58,35.81,58.08,14.41,58.08,15.72,52.67,55.21,High Trust Desert,High
+Jharkhand,140,17,36,31,56,16,37,87,19,28,14,47.7,40.0,62.14,11.43,62.14,13.57,50.0,58.09,High Trust Desert,High
+Uttar Pradesh,1086,114,275,251,446,110,279,697,179,344,182,45.61,41.07,64.18,10.13,64.18,16.48,52.91,59.79,High Trust Desert,High
+Tamil Nadu,655,112,168,117,258,110,170,375,105,208,104,48.26,39.39,57.25,16.79,57.25,16.03,50.0,55.53,High Trust Desert,High
+Jammu and Kashmir,84,15,22,13,34,15,22,47,13,21,11,49.15,40.48,55.95,17.86,55.95,15.48,52.38,55.43,High Trust Desert,Medium
+Odisha,109,15,25,30,39,14,26,69,16,29,17,48.9,35.78,63.3,12.84,63.3,14.68,58.62,57.52,High Trust Desert,High
+Rajasthan,504,64,116,113,211,63,117,324,85,159,76,45.95,41.87,64.29,12.5,64.29,16.87,47.8,59.02,High Trust Desert,High
+Telangana,437,61,111,104,161,60,112,265,76,151,73,48.65,36.84,60.64,13.73,60.64,17.39,48.34,56.0,High Trust Desert,High
+Himachal Pradesh,48,9,15,7,17,8,16,24,6,10,3,50.4,35.42,50.0,16.67,50.0,12.5,30.0,50.23,Moderate Trust Desert,Medium
+Assam,131,16,32,31,52,16,32,83,13,34,17,47.26,39.69,63.36,12.21,63.36,9.92,50.0,58.22,High Trust Desert,High
+Bihar,440,49,92,106,193,49,92,299,74,155,80,43.15,43.86,67.95,11.14,67.95,16.82,51.61,61.61,High Trust Desert,High
+Madhya Pradesh,377,40,90,74,173,40,90,247,60,115,65,43.23,45.89,65.52,10.61,65.52,15.92,56.52,62.19,High Trust Desert,High
+Meghalaya,4,1,1,0,2,1,1,2,0,0,0,46.0,50.0,50.0,25.0,50.0,0.0,0.0,50.6,Moderate Trust Desert,Low - small sample
+Gujarat,853,111,234,173,335,107,238,508,174,327,165,47.07,39.27,59.55,12.54,59.55,20.4,50.46,57.15,High Trust Desert,High
+Dadra and Nagar Haveli and Daman and Diu,1,0,0,1,0,0,0,1,0,0,0,56.0,0.0,100.0,0.0,100.0,0.0,0.0,51.6,Moderate Trust Desert,Low - small sample
+Chhattisgarh,120,15,33,34,38,15,33,72,18,42,25,49.56,31.67,60.0,12.5,60.0,15.0,59.52,55.52,High Trust Desert,High
+Chandigarh,28,7,7,3,11,7,7,14,3,11,4,53.43,39.29,50.0,25.0,50.0,10.71,36.36,49.91,Moderate Trust Desert,Low - small sample
+Punjab,414,47,102,90,175,47,102,265,68,129,79,45.32,42.27,64.01,11.35,64.01,16.43,61.24,60.74,High Trust Desert,High
+Haryana,396,57,106,67,166,57,106,233,55,141,60,46.89,41.92,58.84,14.39,58.84,13.89,42.55,56.63,High Trust Desert,High
+Uttarakhand,137,19,33,29,56,18,34,85,15,41,18,46.93,40.88,62.04,13.14,62.04,10.95,43.9,57.5,High Trust Desert,High
+Mizoram,5,0,1,0,4,0,1,4,0,0,0,31.6,80.0,80.0,0.0,80.0,0.0,0.0,74.26,Critical Trust Desert,Low - small sample
+Kerala,620,87,166,127,240,86,167,367,75,173,82,48.72,38.71,59.19,13.87,59.19,12.1,47.4,56.07,High Trust Desert,High
+Andhra Pradesh,280,29,57,69,125,29,57,194,51,99,54,44.04,44.64,69.29,10.36,69.29,18.21,54.55,62.49,High Trust Desert,High
+Goa,32,4,7,11,10,4,7,21,3,13,8,50.47,31.25,65.63,12.5,65.63,9.38,61.54,56.87,High Trust Desert,Medium
+Maharashtra,1578,212,428,321,617,209,431,938,301,550,282,47.75,39.1,59.44,13.24,59.44,19.07,51.27,56.91,High Trust Desert,High
+West Bengal,504,43,152,107,202,43,152,309,53,125,61,45.72,40.08,61.31,8.53,61.31,10.52,48.8,58.67,High Trust Desert,High
+Nagaland,3,0,0,1,2,0,0,3,0,1,0,30.33,66.67,100.0,0.0,100.0,0.0,0.0,75.45,Critical Trust Desert,Low - small sample
+Arunachal Pradesh,2,1,1,0,0,1,1,0,0,1,0,79.5,0.0,0.0,50.0,0.0,0.0,0.0,13.08,Lower Relative Risk,Low - small sample
+Karnataka,465,57,114,116,178,56,115,294,82,160,79,47.49,38.28,63.23,12.04,63.23,17.63,49.38,57.7,High Trust Desert,High
+Manipur,18,3,3,2,10,3,3,12,1,2,2,39.61,55.56,66.67,16.67,66.67,5.56,100.0,69.06,High Trust Desert,Low - small sample
+Sikkim,5,2,0,3,0,2,0,3,0,1,0,68.2,0.0,60.0,40.0,60.0,0.0,0.0,31.77,Lower Relative Risk,Low - small sample
+Puducherry,31,3,7,6,15,3,7,21,2,6,3,42.26,48.39,67.74,9.68,67.74,6.45,50.0,63.18,High Trust Desert,Medium
