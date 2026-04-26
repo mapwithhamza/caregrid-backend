@@ -1,7 +1,57 @@
 # CareGrid India Backend Progress
 
 ## Current Stage
-Final backend QA and integration contract completed.
+**Stage 19 — Standalone CareGrid Vector Agent integrated into the
+FastAPI backend.** The completed standalone agent (Stages 1–18, 493
+passing tests, real Databricks Vector Search + real Tavily smokes done)
+is shipped inside this repo at `caregrid_vector_agent/` and is wired
+into `POST /agent/recommend` through a thin adapter at
+`app/services/caregrid_agent_service.py`. The backend boots, loads the
+10,000-row CSV exactly once via `data_store.load_facilities()`, and
+hands the dataframe directly to
+`agent_core.recommendation_engine.run_recommendation()` — no second
+read, no duplicated data on disk. Vector search and Tavily verification
+are both backend-side opt-ins controlled by environment variables;
+missing credentials never crash the route. If the standalone agent
+fails to import or raises at runtime, the route automatically falls
+back to the original simple recommender (`engine: "simple_legacy_fallback"`)
+and surfaces a short safe error in `trace_summary.errors`. The original
+Stage-1 response shape is preserved 1:1 for frontend compatibility;
+new optional fields (`retrieval_summary`, `trace_summary`,
+`evidence_snippets`, `validation_findings`, `score_breakdown`,
+`web_verification`, `human_next_steps`, `engine`) are additive under
+`extra="allow"` on the Pydantic model. Smoke checks completed:
+`/health` returns `data_loaded=true`, `facility_rows=10000`;
+`POST /agent/recommend` with a Bihar ICU query returns
+`engine="caregrid_vector_agent"`, all 8 trace stages, full retrieval
+summary (`local_count=164`, `merged_count=164`, vector + Tavily off
+by default), and a populated safety note. Files added/changed:
+`caregrid_vector_agent/` (full agent package, ~1.2 MB minus the
+duplicate CSV),
+`app/services/caregrid_agent_service.py` (NEW),
+`app/routers/agent.py` (advanced-first, simple-fallback),
+`app/models.py` (Stage-19 fields under `extra="allow"`),
+`requirements.txt` (added `pydantic-settings`,
+`databricks-vectorsearch>=0.40`, `tavily-python>=0.3.0`),
+`.env.example` (placeholders for all `DATABRICKS_*` and `TAVILY_*`
+keys; no secrets), `.gitignore` (extra rules to keep
+`caregrid_vector_agent/.env`, `data/raw/*.csv`, caches, and proof zip
+out of git), `README.md` (combined backend + agent docs).
+
+## Stage 18 (within `caregrid_vector_agent/`) — completed before this
+Real combined Vector + Tavily smoke proven against the live Databricks
+endpoint and live Tavily API. See
+`caregrid_vector_agent/docs/COMBINED_AGENT_SMOKE_TEST.md` and the
+`data/outputs/combined_vector_tavily_*.{json,md}` proof files.
+
+## Stage 19 next step
+Frontend remains AI-ready and continues to call only the backend. No
+frontend release required. If the team wants to surface the new
+`evidence_snippets` / `score_breakdown` / `web_verification` panels in
+the UI, the data is already on the response and just needs rendering.
+
+## Pre-Stage-19 marker
+Final backend QA and integration contract completed (pre-Stage-19).
 
 ## Completed Before Backend
 - Databricks raw dataset loaded.
@@ -13,6 +63,8 @@ Final backend QA and integration contract completed.
 - Backend/frontend package created.
 - Plan A handoff file created.
 - Impact/desert analysis package created.
+- Stages 1 – 18 of the standalone CareGrid Vector Agent (delivered
+  inside `caregrid_vector_agent/`).
 
 ## Current Backend Task
 Prompt 9 — Final Backend QA and Integration Contract.

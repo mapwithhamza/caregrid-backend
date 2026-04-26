@@ -277,14 +277,51 @@ class SearchResponse(CareGridModel):
 
 
 class AgentRecommendRequest(CareGridModel):
+    """Frontend request payload for ``POST /agent/recommend``.
+
+    The original 4 fields (``query``, ``state``, ``facility_type``,
+    ``min_trust_score``, ``max_results``) are kept for backward
+    compatibility with the existing frontend. The remaining fields are
+    Stage-19 additions that opt the request into the upgraded
+    standalone-agent pipeline (vector search, Tavily web verification,
+    future AI explanations). Both canonical and short-alias names are
+    accepted so frontend changes are not required.
+    """
+
+    model_config = ConfigDict(coerce_numbers_to_str=True, extra="ignore")
+
     query: str
     state: Optional[str] = None
     facility_type: Optional[str] = None
     min_trust_score: Optional[float] = None
     max_results: int = Field(default=5, ge=1, le=20)
 
+    enable_vector: Optional[bool] = None
+    enable_vector_search: Optional[bool] = None
+    enable_web_verification: Optional[bool] = None
+    enable_tavily: Optional[bool] = None
+    web_depth: Optional[str] = Field(default=None, description="basic | demo")
+    max_web_verified: Optional[int] = Field(default=None, ge=0, le=10)
+    include_ai_explanation: Optional[bool] = None
+
+    def resolved_enable_vector(self) -> bool:
+        return bool(self.enable_vector_search or self.enable_vector)
+
+    def resolved_enable_web_verification(self) -> bool:
+        return bool(self.enable_web_verification or self.enable_tavily)
+
 
 class AgentRecommendationItem(CareGridModel):
+    """Single recommendation row.
+
+    The first block of fields is the original Stage-1 contract the
+    existing frontend already consumes. The Stage-19 block below is
+    optional and is only populated when the upgraded standalone agent
+    handled the request.
+    """
+
+    model_config = ConfigDict(coerce_numbers_to_str=True, extra="allow")
+
     facility_id: str
     name: str
     facility_type: Optional[str] = None
@@ -297,19 +334,46 @@ class AgentRecommendationItem(CareGridModel):
     recommendation_readiness: str
     specialties: Optional[str] = None
     evidence_summary: Optional[str] = None
-    matched_capabilities: list[str]
-    matched_fields: list[str]
-    warning_flags: list[str]
-    recommendation_score: float
-    reason_for_recommendation: str
+    matched_capabilities: list[str] = Field(default_factory=list)
+    matched_fields: list[str] = Field(default_factory=list)
+    warning_flags: list[str] = Field(default_factory=list)
+    recommendation_score: float = 0.0
+    reason_for_recommendation: str = ""
+
+    evidence_snippets: Optional[list[dict[str, Any]]] = None
+    validation_findings: Optional[list[dict[str, Any]]] = None
+    score_breakdown: Optional[dict[str, Any]] = None
+    web_verification: Optional[dict[str, Any]] = None
+    human_next_steps: Optional[list[str]] = None
 
 
 class AgentRecommendResponse(CareGridModel):
+    """Backend response.
+
+    Original fields are preserved verbatim; Stage-19 fields are
+    optional. ``extra="allow"`` lets the upgraded agent surface
+    additional keys (e.g. future AI-explanation panel) without a
+    frontend release.
+    """
+
+    model_config = ConfigDict(coerce_numbers_to_str=True, extra="allow")
+
     query: str
     interpreted_intent: dict[str, Any]
     total_candidates: int
     returned: int
     recommendations: list[AgentRecommendationItem]
-    reasoning: str
+    reasoning: str = ""
     safety_note: str
     fallback_message: Optional[str] = None
+
+    retrieval_summary: Optional[dict[str, Any]] = None
+    trace_summary: Optional[dict[str, Any]] = None
+    evidence: Optional[list[dict[str, Any]]] = None
+    validation_findings: Optional[list[dict[str, Any]]] = None
+    warnings: Optional[list[str]] = None
+    intent: Optional[dict[str, Any]] = None
+    engine: Optional[str] = Field(
+        default=None,
+        description="Which engine produced this response: 'caregrid_vector_agent' or 'simple_legacy_fallback'.",
+    )

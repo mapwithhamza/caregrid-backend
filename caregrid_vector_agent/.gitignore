@@ -1,0 +1,58 @@
+# Environment
+.env
+*.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+.eggs/
+
+# Virtual environments
+venv/
+.venv/
+env/
+.env/
+
+# pytest
+.pytest_cache/
+.cache/
+htmlcov/
+.coverage
+coverage.xml
+
+# MLflow
+mlruns/
+mlartifacts/
+
+# Data — raw and processed data is not committed
+data/raw/*
+data/processed/*
+data/vector_source/*
+data/outputs/*
+data/tavily_cache/*
+
+# Keep data directory structure
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+!data/vector_source/.gitkeep
+!data/outputs/.gitkeep
+!data/tavily_cache/.gitkeep
+
+# IDE
+.vscode/
+.idea/
+*.code-workspace
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Jupyter / notebooks temp
+.ipynb_checkpoints/
