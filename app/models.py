@@ -313,3 +313,10 @@ class AgentRecommendResponse(CareGridModel):
     reasoning: str
     safety_note: str
     fallback_message: Optional[str] = None
+    # AI-generated fields (populated when GEMINI_API_KEY is set)
+    agent_mode: str = "rule-based"
+    model_used: Optional[str] = None
+    model_provider: Optional[str] = None
+    ai_summary: Optional[str] = None
+    ai_reasoning: Optional[str] = None
+    ai_next_steps: Optional[str] = None

@@ -1,7 +1,10 @@
 from typing import Any, Optional
 
 import pandas as pd
+from dotenv import load_dotenv
 from fastapi import APIRouter, HTTPException
+
+load_dotenv()  # load .env so GEMINI_API_KEY is available
 
 from app.data_loader import data_store
 from app.models import (
@@ -10,6 +13,7 @@ from app.models import (
     AgentRecommendResponse,
     clean_nan,
 )
+from app.routers.agent_llm import get_ai_fields
 
 
 router = APIRouter()
@@ -468,6 +472,26 @@ def recommend_facilities(request: AgentRecommendRequest) -> AgentRecommendRespon
         "allow_verification_needed": trust_intent["allow_verification_needed"],
     }
 
+    # Serialize top recommendations for the Gemini prompt
+    recs_as_dicts = [
+        {
+            "name": r.name,
+            "facility_type": r.facility_type,
+            "city": r.city,
+            "state": r.state,
+            "trust_score": r.trust_score,
+            "trust_category": r.trust_category,
+            "recommendation_readiness": r.recommendation_readiness,
+            "matched_capabilities": r.matched_capabilities,
+            "warning_flags": r.warning_flags,
+            "evidence_summary": r.evidence_summary,
+        }
+        for r in limited_recommendations
+    ]
+
+    # Call Gemini for AI summary (gracefully returns None fields if key missing/fails)
+    ai_fields = get_ai_fields(query, recs_as_dicts)
+
     return AgentRecommendResponse(
         query=query,
         interpreted_intent=interpreted_intent,
@@ -485,4 +509,11 @@ def recommend_facilities(request: AgentRecommendRequest) -> AgentRecommendRespon
         ),
         safety_note=SAFETY_NOTE,
         fallback_message=fallback_message,
+        # AI fields from Gemini (all Optional -- safe when not set)
+        agent_mode=ai_fields.get("agent_mode", "rule-based"),
+        model_used=ai_fields.get("model_used"),
+        model_provider=ai_fields.get("model_provider"),
+        ai_summary=ai_fields.get("ai_summary"),
+        ai_reasoning=ai_fields.get("ai_reasoning"),
+        ai_next_steps=ai_fields.get("ai_next_steps"),
     )

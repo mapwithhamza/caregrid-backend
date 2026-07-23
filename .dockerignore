@@ -1,0 +1,13 @@
+.venv/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.env
+.git/
+.gitignore
+tests/
+docs/
+*.md
+package-lock.json
