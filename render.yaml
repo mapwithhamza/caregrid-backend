@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: caregrid-backend
+    env: docker
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /health
+    envVars:
+      - key: ENVIRONMENT
+        value: production
+      - key: DATA_DIR
+        value: ./data
+      - key: GEMINI_API_KEY
+        sync: false
