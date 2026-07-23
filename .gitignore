@@ -8,6 +8,8 @@ env/
 ENV/
 
 .env
+.env.local
+.env.*.local
 
 .pytest_cache/
 .mypy_cache/
@@ -21,3 +23,15 @@ dist/
 
 .DS_Store
 Thumbs.db
+
+# Standalone CareGrid agent: never ship its secrets/cache, but keep its
+# committed proof artefacts (data/outputs/*.json, *.md).
+caregrid_vector_agent/.env
+caregrid_vector_agent/.env.local
+caregrid_vector_agent/.pytest_cache/
+caregrid_vector_agent/__pycache__/
+caregrid_vector_agent/data/raw/*.csv
+caregrid_vector_agent/data/processed/
+caregrid_vector_agent/data/tavily_cache/
+caregrid_vector_agent/data/vector_source/
+caregrid_vector_agent/*.zip

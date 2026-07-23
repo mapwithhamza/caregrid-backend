@@ -1,3 +1,4 @@
+import logging
 from typing import Any, Optional
 
 import pandas as pd
@@ -15,6 +16,7 @@ from app.models import (
 )
 from app.routers.agent_llm import get_ai_fields
 
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
@@ -381,6 +383,87 @@ def _global_reasoning(
     return reasoning
 
 
+def _build_advanced_response(
+    *,
+    request: AgentRecommendRequest,
+    facilities: pd.DataFrame,
+) -> Optional[AgentRecommendResponse]:
+    """Try the upgraded standalone CareGrid agent. Return ``None`` on any
+    failure so the caller can fall back to the legacy simple recommender."""
+
+    enable_vector = request.resolved_enable_vector()
+    enable_web = request.resolved_enable_web_verification()
+
+    payload, error = run_advanced_recommendation(
+        query=request.query.strip(),
+        facilities_df=facilities,
+        state=request.state,
+        facility_type=request.facility_type,
+        min_trust_score=request.min_trust_score,
+        max_results=request.max_results,
+        enable_vector_search=enable_vector,
+        enable_web_verification=enable_web,
+        web_verification_depth=(request.web_depth or "basic"),
+        max_web_verified=(request.max_web_verified if request.max_web_verified is not None else 2),
+    )
+
+    if payload is None:
+        logger.warning("Advanced agent returned no payload (%s); using legacy fallback.", error)
+        return None
+
+    interpreted_intent = payload.get("interpreted_intent") or payload.get("intent") or {}
+    if not isinstance(interpreted_intent, dict):
+        interpreted_intent = {}
+
+    raw_recs = payload.get("recommendations") or []
+    if not isinstance(raw_recs, list):
+        raw_recs = []
+
+    recommendations: list[AgentRecommendationItem] = []
+    for raw in raw_recs:
+        if not isinstance(raw, dict):
+            continue
+        try:
+            recommendations.append(AgentRecommendationItem.model_validate(raw))
+        except Exception:  # noqa: BLE001
+            try:
+                minimal = {
+                    "facility_id": str(raw.get("facility_id", "")),
+                    "name": str(raw.get("name", "")),
+                    "state": str(raw.get("state", "")),
+                    "trust_category": str(raw.get("trust_category", "")),
+                    "recommendation_readiness": str(raw.get("recommendation_readiness", "")),
+                    "matched_capabilities": raw.get("matched_capabilities") or [],
+                    "matched_fields": raw.get("matched_fields") or [],
+                    "warning_flags": raw.get("warning_flags") or raw.get("warnings") or [],
+                    "recommendation_score": float(raw.get("recommendation_score", 0.0) or 0.0),
+                    "reason_for_recommendation": str(raw.get("reason_for_recommendation", "")),
+                }
+                recommendations.append(AgentRecommendationItem.model_validate(minimal))
+            except Exception:
+                continue
+
+    response = AgentRecommendResponse(
+        query=str(payload.get("query") or request.query),
+        interpreted_intent=interpreted_intent,
+        total_candidates=int(payload.get("total_candidates") or len(recommendations)),
+        returned=int(payload.get("returned") or len(recommendations)),
+        recommendations=recommendations,
+        reasoning=str(payload.get("reasoning") or "")
+        or "Powered by the standalone CareGrid Vector Agent (local + optional vector + optional web verification).",
+        safety_note=str(payload.get("safety_note") or SAFETY_NOTE),
+        fallback_message=payload.get("fallback_message"),
+        retrieval_summary=payload.get("retrieval_summary"),
+        trace_summary=payload.get("trace_summary"),
+        evidence=payload.get("evidence"),
+        validation_findings=payload.get("validation_findings"),
+        warnings=payload.get("warnings"),
+        intent=payload.get("intent"),
+        engine="caregrid_vector_agent",
+    )
+    return response
+
+
 @router.post("/recommend", response_model=AgentRecommendResponse)
 def recommend_facilities(request: AgentRecommendRequest) -> AgentRecommendResponse:
     query = request.query.strip()
@@ -393,6 +476,15 @@ def recommend_facilities(request: AgentRecommendRequest) -> AgentRecommendRespon
         )
 
     facilities = _load_facilities_or_503()
+
+    if advanced_agent_available():
+        try:
+            advanced_response = _build_advanced_response(request=request, facilities=facilities)
+            if advanced_response is not None:
+                return advanced_response
+        except Exception as exc:  # noqa: BLE001
+            logger.exception("Advanced agent path raised; falling back to legacy. (%s)", exc)
+
     state = _detect_state(query, facilities, request.state)
     facility_type = _detect_facility_type(query, request.facility_type)
     detected_capabilities = _detect_capabilities(query)
