@@ -16,6 +16,21 @@ from app.models import (
 )
 from app.routers.agent_llm import get_ai_fields
 
+# Import the advanced agent service -- safe fallback if not available
+try:
+    from app.services.caregrid_agent_service import (
+        is_available as advanced_agent_available,
+        run_advanced_recommendation,
+    )
+except Exception as _svc_import_err:  # noqa: BLE001
+    logger.warning("Advanced agent service unavailable: %s", _svc_import_err)
+
+    def advanced_agent_available() -> bool:  # type: ignore[misc]
+        return False
+
+    def run_advanced_recommendation(*args, **kwargs):  # type: ignore[misc]
+        return None, "service not available"
+
 logger = logging.getLogger(__name__)
 
 router = APIRouter()
@@ -453,13 +468,7 @@ def _build_advanced_response(
         or "Powered by the standalone CareGrid Vector Agent (local + optional vector + optional web verification).",
         safety_note=str(payload.get("safety_note") or SAFETY_NOTE),
         fallback_message=payload.get("fallback_message"),
-        retrieval_summary=payload.get("retrieval_summary"),
-        trace_summary=payload.get("trace_summary"),
-        evidence=payload.get("evidence"),
-        validation_findings=payload.get("validation_findings"),
-        warnings=payload.get("warnings"),
-        intent=payload.get("intent"),
-        engine="caregrid_vector_agent",
+        agent_mode="hybrid",
     )
     return response
 
